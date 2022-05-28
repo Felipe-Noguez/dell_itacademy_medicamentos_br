@@ -1,5 +1,7 @@
 package com.itacademy.medicamentosbr.controller;
 
+import java.util.List;
+
 import com.itacademy.medicamentosbr.bean.MedicamentoVendaAnoBean;
 import com.itacademy.medicamentosbr.service.MedicamentoService;
 
@@ -15,10 +17,10 @@ public class MedicamentoController {
     @Autowired
     MedicamentoService medicamentoService;
 
-    @GetMapping(value = "/listar-medicamentos-comercializados-2020/{nome}{comercializacao2020}")
-    public ResponseEntity<MedicamentoVendaAnoBean> consultarMedicamentoVendaAnoBean (@PathVariable("nome") String nome, @PathVariable ("comercializacao2020") String comercializacao2020) {
-        MedicamentoVendaAnoBean medicamentoVendaAnoBean = medicamentoService.consultarMedicamentoVendaAnoBean(nome, comercializacao2020);
-        return medicamentoVendaAnoBean == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(medicamentoVendaAnoBean);
+    @GetMapping(value = "/listar-medicamentos-comercializados-2020/{nome}")
+    public ResponseEntity<List<MedicamentoVendaAnoBean>> consultarMedicamentoVendaAnoBean (@PathVariable("nome") String nome) {
+        List<MedicamentoVendaAnoBean> medicamentosVendaAnoBean = medicamentoService.buscarMedicamentosComercializadosEm2020PorNome(nome);
+        return medicamentosVendaAnoBean.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(medicamentosVendaAnoBean);
     }
 
 }

@@ -31,7 +31,7 @@ public class Medicamento {
     private String comercializacao2020;
 
     @Column(name = "ean_1", length = 26)
-    private Integer ean1;
+    private String ean1;
 
     @Column(name = "pmc_0", length = 13)
     private Double pmc0;
@@ -47,7 +47,7 @@ public class Medicamento {
     }
 
     public Medicamento(Integer id, String nome, String produto, String apresentacao, Double pfSemImposto,
-            String comercializacao2020, Integer ean1, Double pmc0, Double pmc20,
+            String comercializacao2020, String ean1, Double pmc0, Double pmc20,
             String listaConcessaoCreditoPisCofins) {
         this.id = id;
         this.nome = nome;
@@ -109,11 +109,11 @@ public class Medicamento {
         this.comercializacao2020 = comercializacao2020;
     }
 
-    public Integer getEan1() {
+    public String getEan1() {
         return ean1;
     }
 
-    public void setEan1(Integer ean1) {
+    public void setEan1(String ean1) {
         this.ean1 = ean1;
     }
 

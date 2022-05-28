@@ -10,8 +10,8 @@ public class MedicamentoVendaAnoBean {
     private String nome;
     private String produto;
     private String apresentacao;
-    private Double pfSemImposto;
-    
+    private Double pfSemImposto;    
+
     public MedicamentoVendaAnoBean(String nome, String produto, String apresentacao, Double pfSemImposto) {
         this.nome = nome;
         this.produto = produto;

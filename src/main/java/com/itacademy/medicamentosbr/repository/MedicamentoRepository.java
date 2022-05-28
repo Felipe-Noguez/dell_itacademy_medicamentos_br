@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface MedicamentoRepository extends JpaRepository <Medicamento, Integer> {
 
     //Tazer lista de medicamentos comercializado no ano de 2020.
-    Medicamento findAllByNomeAndComercializacao2020(String nome, String comercializacao2020);
+    List<Medicamento> findByNomeContains(String nome);
     //List<Medicamento> findAllNome(String nome);
 
 
