@@ -12,4 +12,6 @@ public interface MedicamentoRepository extends JpaRepository<Medicamento, Intege
 
     List<Medicamento> findByEan1(String ean1);
 
+    List<Medicamento> findByComercializacao2020(String comercializacao2020);
+
 }

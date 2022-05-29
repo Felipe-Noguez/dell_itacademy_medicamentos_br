@@ -2,6 +2,7 @@ package com.itacademy.medicamentosbr.controller;
 
 import java.util.List;
 
+import com.itacademy.medicamentosbr.bean.ConcessaoTributariaBean;
 import com.itacademy.medicamentosbr.bean.MedicamentoCodigoDeBarrasEan1Bean;
 import com.itacademy.medicamentosbr.bean.MedicamentoVendaAnoBean;
 import com.itacademy.medicamentosbr.service.MedicamentoService;
@@ -28,6 +29,12 @@ public class MedicamentoController {
     public ResponseEntity<MedicamentoCodigoDeBarrasEan1Bean> buscarPmcMaiorMenorPorCodigoDeBarra(@PathVariable("ean1") String ean1) {
         MedicamentoCodigoDeBarrasEan1Bean medicamentoCodigoDeBarrasEan1Bean = medicamentoService.buscarMedicamentosPorCodigoDeBarrasEan1(ean1);
         return medicamentoCodigoDeBarrasEan1Bean == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(medicamentoCodigoDeBarrasEan1Bean);
+    }
+
+    @GetMapping(value = "/listar-comparativo-concessao-credito-tributario")
+    public ResponseEntity<List<ConcessaoTributariaBean>> listarComparativoConcessaoDeCreditoTributario() {
+        List<ConcessaoTributariaBean> concessoesTributarias = medicamentoService.listarComparativoConcessaoDeCreditoTributario();
+        return concessoesTributarias == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(concessoesTributarias);
     }
 
 }

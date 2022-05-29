@@ -40,7 +40,7 @@ public class Medicamento {
     private Double pmc20;
 
     @Column(name = "lista_concessao_credito_pis_cofins", length = 6)
-    private String listaConcessaoCreditoPisCofins;
+    private String concessaoCreditoPisCofins;
 
     public Medicamento() {
 
@@ -48,7 +48,7 @@ public class Medicamento {
 
     public Medicamento(Integer id, String nome, String produto, String apresentacao, Double pfSemImposto,
             String comercializacao2020, String ean1, Double pmc0, Double pmc20,
-            String listaConcessaoCreditoPisCofins) {
+            String concessaoCreditoPisCofins) {
         this.id = id;
         this.nome = nome;
         this.produto = produto;
@@ -58,7 +58,7 @@ public class Medicamento {
         this.ean1 = ean1;
         this.pmc0 = pmc0;
         this.pmc20 = pmc20;
-        this.listaConcessaoCreditoPisCofins = listaConcessaoCreditoPisCofins;
+        this.concessaoCreditoPisCofins = concessaoCreditoPisCofins;
     }
 
     public Integer getId() {
@@ -133,12 +133,12 @@ public class Medicamento {
         this.pmc20 = pmc20;
     }
 
-    public String getListaConcessaoCreditoPisCofins() {
-        return listaConcessaoCreditoPisCofins;
+    public String getConcessaoCreditoPisCofins() {
+        return concessaoCreditoPisCofins;
     }
 
-    public void setListaConcessaoCreditoPisCofins(String listaConcessaoCreditoPisCofins) {
-        this.listaConcessaoCreditoPisCofins = listaConcessaoCreditoPisCofins;
+    public void setConcessaoCreditoPisCofins(String concessaoCreditoPisCofins) {
+        this.concessaoCreditoPisCofins = concessaoCreditoPisCofins;
     }
 
 }
