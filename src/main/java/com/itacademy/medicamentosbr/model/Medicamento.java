@@ -13,7 +13,7 @@ public class Medicamento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;    
+    private Integer id;
 
     @Column(name = "substancia", length = 190)
     private String nome;
@@ -42,7 +42,7 @@ public class Medicamento {
     @Column(name = "lista_concessao_credito_pis_cofins", length = 6)
     private String listaConcessaoCreditoPisCofins;
 
-    public Medicamento(){
+    public Medicamento() {
 
     }
 
@@ -140,6 +140,5 @@ public class Medicamento {
     public void setListaConcessaoCreditoPisCofins(String listaConcessaoCreditoPisCofins) {
         this.listaConcessaoCreditoPisCofins = listaConcessaoCreditoPisCofins;
     }
-
 
 }

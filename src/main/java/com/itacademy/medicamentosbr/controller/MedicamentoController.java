@@ -2,6 +2,7 @@ package com.itacademy.medicamentosbr.controller;
 
 import java.util.List;
 
+import com.itacademy.medicamentosbr.bean.MedicamentoCodigoDeBarrasEan1Bean;
 import com.itacademy.medicamentosbr.bean.MedicamentoVendaAnoBean;
 import com.itacademy.medicamentosbr.service.MedicamentoService;
 
@@ -21,6 +22,12 @@ public class MedicamentoController {
     public ResponseEntity<List<MedicamentoVendaAnoBean>> consultarMedicamentoVendaAnoBean (@PathVariable("nome") String nome) {
         List<MedicamentoVendaAnoBean> medicamentosVendaAnoBean = medicamentoService.buscarMedicamentosComercializadosEm2020PorNome(nome);
         return medicamentosVendaAnoBean.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(medicamentosVendaAnoBean);
+    }
+
+    @GetMapping(value = "/buscar-pmc-maior-menor/{ean1}")
+    public ResponseEntity<MedicamentoCodigoDeBarrasEan1Bean> buscarPmcMaiorMenorPorCodigoDeBarra(@PathVariable("ean1") String ean1) {
+        MedicamentoCodigoDeBarrasEan1Bean medicamentoCodigoDeBarrasEan1Bean = medicamentoService.buscarMedicamentosPorCodigoDeBarrasEan1(ean1);
+        return medicamentoCodigoDeBarrasEan1Bean == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(medicamentoCodigoDeBarrasEan1Bean);
     }
 
 }
