@@ -3,6 +3,7 @@ package com.itacademy.medicamentosbr.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import com.itacademy.medicamentosbr.bean.ConcessaoTributariaBean;
 import com.itacademy.medicamentosbr.bean.MedicamentoCodigoDeBarrasEan1Bean;
@@ -35,7 +36,7 @@ public class MedicamentoService {
 
         for (Medicamento medicamento : medicamentos) {
             MedicamentoVendaAnoBean medicamentoVendaAnoBean = new MedicamentoVendaAnoBean(medicamento.getNome(),
-                    medicamento.getProduto(), medicamento.getApresentacao(), medicamento.getPfSemImposto());
+                    medicamento.getProduto(), medicamento.getApresentacao(), medicamento.getPrecoFabricaSemImposto());
             medicamentosVendaAnoBean.add(medicamentoVendaAnoBean);
         }
 
@@ -43,25 +44,28 @@ public class MedicamentoService {
 
     }
 
-    public MedicamentoCodigoDeBarrasEan1Bean buscarMedicamentosPorCodigoDeBarrasEan1(String ean1) {
+    //Evitar o retorno NullPointerException
+    public Optional<MedicamentoCodigoDeBarrasEan1Bean> buscarMedicamentosPorCodigoDeBarrasEan1(String ean1) {
         List<Medicamento> medicamentos = medicamentoRepository.findByEan1(ean1);
 
         if (medicamentos.isEmpty()) {
-            return null;
+            return Optional.empty();
         }
 
         Double maiorPmc = medicamentos.stream().mapToDouble(Medicamento::getPmc0).max().getAsDouble();
         Double menorPmc = medicamentos.stream().mapToDouble(Medicamento::getPmc0).min().getAsDouble();
         Double diferenca = maiorPmc - menorPmc;
 
-        return new MedicamentoCodigoDeBarrasEan1Bean(ean1, maiorPmc, menorPmc, diferenca, medicamentos.size());
+        return Optional.of(new MedicamentoCodigoDeBarrasEan1Bean(ean1, maiorPmc, menorPmc, diferenca, medicamentos.size()));
     }
 
     public List<ConcessaoTributariaBean> listarComparativoConcessaoDeCreditoTributario() {
         List<String> concessoesCreditoPisCofins = medicamentoRepository.findByComercializacao2020("Sim").stream()
                 .map(Medicamento::getConcessaoCreditoPisCofins).toList();
 
-        List<ConcessaoTributariaBean> concessoesTributarias = new ArrayList<>();
+        if(concessoesCreditoPisCofins.isEmpty()) {
+            return Collections.emptyList();
+        }
 
         Long negativaCount = concessoesCreditoPisCofins.stream()
                 .filter(concessao -> concessao.equalsIgnoreCase(NEGATIVA)).count();
@@ -70,15 +74,16 @@ public class MedicamentoService {
         Long neutraCount = concessoesCreditoPisCofins.stream()
                 .filter(concessao -> concessao.equalsIgnoreCase(NEUTRA)).count();
         int total = concessoesCreditoPisCofins.size();
-        System.out.println(total);
-        Long percentualNegativa = calcularPercentualConcessaoCredito(negativaCount, total);
-        Long percentualPositiva = calcularPercentualConcessaoCredito(positivaCount, total);
-        Long percentualNeutra = calcularPercentualConcessaoCredito(neutraCount, total);
 
+        Double percentualNegativa = calcularPercentualConcessaoCredito(negativaCount, total);
+        Double percentualPositiva = calcularPercentualConcessaoCredito(positivaCount, total);
+        Double percentualNeutra = calcularPercentualConcessaoCredito(neutraCount, total);
+        
         String graficoNegativa = gerarGraficoConcessaoCredito(percentualNegativa.intValue());
         String graficoPositiva = gerarGraficoConcessaoCredito(percentualPositiva.intValue());
         String graficoNeutra = gerarGraficoConcessaoCredito(percentualNeutra.intValue());
 
+        List<ConcessaoTributariaBean> concessoesTributarias = new ArrayList<>();
         concessoesTributarias
                 .add(new ConcessaoTributariaBean(NEGATIVA, formatarPercentual(percentualNegativa), graficoNegativa));
         concessoesTributarias
@@ -93,12 +98,12 @@ public class MedicamentoService {
         return "*".repeat(tamanho);
     }
 
-    private static Long calcularPercentualConcessaoCredito(Long quantidade, int total) {
-        return (quantidade * 100) / total;
+    private static double calcularPercentualConcessaoCredito(Long quantidade, int total) {
+        return (double) (quantidade * 100) / total;
     }
 
-    private static String formatarPercentual(Long percent) {
-        return String.format("%d%s", percent, "%");
+    private static String formatarPercentual(double percent) {
+        return String.format("%.2f%s", percent, "%");
     }
 
 }
